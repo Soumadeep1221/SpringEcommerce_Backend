@@ -96,13 +96,12 @@ Improves API clarity, flexibility, and security.
 
 ---
 
-## ⚙️ Running the Project Locally
-
-### 🔗 Repository
-
-https://github.com/Soumadeep1221/SpringEcommerce_Backend.git
+## 🔗 Frontend Repository
+https://github.com/Soumadeep1221/SpringEcommerce_Frontend.git
 
 ---
+
+## ⚙️ Running the Project Locally
 
 ### 1️⃣ Install JDK
 
