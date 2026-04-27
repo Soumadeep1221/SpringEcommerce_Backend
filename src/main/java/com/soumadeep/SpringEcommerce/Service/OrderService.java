@@ -9,15 +9,20 @@ import com.soumadeep.SpringEcommerce.Model.OrderItem;
 import com.soumadeep.SpringEcommerce.Model.Product;
 import com.soumadeep.SpringEcommerce.Repo.OrderRepo;
 import com.soumadeep.SpringEcommerce.Repo.ProductRepo;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.filter.Filter;
+import org.springframework.ai.vectorstore.pgvector.PgVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -27,6 +32,8 @@ public class OrderService {
     private ProductRepo productRepo;
     @Autowired
     private OrderRepo orderRepo;
+    @Autowired
+    private PgVectorStore vectorStore;
 
     public OrderResponse placeOrder(OrderRequest orderRequest) {
 
@@ -55,8 +62,42 @@ public class OrderService {
                 );
             }
 
-            product.setStockQuantity(product.getStockQuantity()- itemReq.quantity());
+            product.setStockQuantity(product.getStockQuantity() - itemReq.quantity());
             productRepo.save(product);
+
+            Filter.Expression filter=new Filter.Expression(
+                    Filter.ExpressionType.EQ,
+                    new Filter.Key("productId"),
+                    new Filter.Value(String.valueOf(product.getId()))
+            );
+            vectorStore.delete(filter);
+
+            String updatedContent=String.format("""
+                Product Name: %s
+                Description: %s
+                Brand: %s
+                Category: %s
+                Price: %.2f
+                Release Date: %s
+                Available: %s
+                Stock: %s
+                """,
+                    product.getName(),
+                    product.getDescription(),
+                    product.getBrand(),
+                    product.getCategory(),
+                    product.getPrice(),
+                    product.getReleaseDate(),
+                    product.isProductAvailable(),
+                    product.getStockQuantity()
+            );
+
+            Document updatedDoc=new Document(
+                    UUID.randomUUID().toString(),
+                    updatedContent,
+                    Map.of("productId",String.valueOf(product.getId())));
+
+            vectorStore.add(List.of(updatedDoc));
 
             OrderItem orderItem=OrderItem.builder()
                     .product(product)
@@ -70,6 +111,28 @@ public class OrderService {
 
         order.setOrderItems(orderItems);
         Order saveOrder=orderRepo.save(order);
+
+        StringBuilder content=new StringBuilder();
+        content.append("Order Summary: \n");
+        content.append("Order ID: ").append(saveOrder.getOrderId()).append("\n");
+        content.append("Customer: ").append(saveOrder.getCustomerName()).append("\n");
+        content.append("Email: ").append(saveOrder.getEmail()).append("\n");
+        content.append("Date: ").append(saveOrder.getOrderDate()).append("\n");
+        content.append("Status: ").append(saveOrder.getStatus()).append("\n");
+        content.append("Products: \n");
+
+        for(OrderItem item:saveOrder.getOrderItems()){
+            content.append("- ").append(item.getProduct().getName())
+                    .append(" X ").append(item.getQuantity())
+                    .append(" = ").append(item.getTotalPrice()).append("\n");
+        }
+
+        Document document=new Document(
+                UUID.randomUUID().toString(),
+                content.toString(),
+                Map.of("orderId",String.valueOf(saveOrder.getId())));
+
+        vectorStore.add(List.of(document));
 
         List<OrderItemResponse> itemResponses=new ArrayList<>();
         for(OrderItem item:order.getOrderItems())
@@ -92,6 +155,7 @@ public class OrderService {
         return orderResponse;
     }
 
+    @Transactional(readOnly = true)
     public List<OrderResponse> getAllOrderResponses() {
 
         List<Order> orders=orderRepo.findAll();
