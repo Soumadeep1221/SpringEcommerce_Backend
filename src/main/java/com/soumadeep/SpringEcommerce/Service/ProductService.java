@@ -85,7 +85,7 @@ public class ProductService {
         Filter.Expression filter=new Filter.Expression(
                 Filter.ExpressionType.EQ,
                 new Filter.Key("productId"),
-                new Filter.Value(String.valueOf(product.getId()))
+                new Filter.Value(String.valueOf(saveProduct.getId()))
         );
         vectorStore.delete(filter);
 

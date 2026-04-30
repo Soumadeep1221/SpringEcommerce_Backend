@@ -31,11 +31,7 @@ public class ChatBotService {
     ChatMemory chatMemory= MessageWindowChatMemory.builder().build();
 
     private ChatBotService(ChatClient.Builder builder){
-        this.chatClient=builder
-                .defaultAdvisors(MessageChatMemoryAdvisor
-                        .builder(chatMemory)
-                        .build())
-                .build();
+        this.chatClient=builder.build();
     }
 
     public String getBotResponse(String message) {

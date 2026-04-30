@@ -21,20 +21,10 @@ public class AIImageGenService {
                 .height(1024)
                 .width(1024)
                 .quality("standard")
-//                .responseFormat("url")
                 .responseFormat("b64_json")
                 .build();
 
         ImageResponse response=imageModel.call(new ImagePrompt(prompt,options));
-//        String imageUrl=response.getResult().getOutput().getUrl();
-
-//        try {
-//            return new URL(imageUrl).openStream().readAllBytes();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-
-
         String image_b64=response.getResult().getOutput().getB64Json();
         return Base64.getDecoder().decode(image_b64);
     }
