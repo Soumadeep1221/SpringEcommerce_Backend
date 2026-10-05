@@ -1,4 +1,4 @@
-package com.soumadeep.SpringEcommerce.Model.DTO;
+package com.soumadeep.SpringEcommerce.DTO;
 
 import jakarta.validation.constraints.Positive;
 

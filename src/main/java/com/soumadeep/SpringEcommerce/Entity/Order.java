@@ -1,4 +1,4 @@
-package com.soumadeep.SpringEcommerce.Model;
+package com.soumadeep.SpringEcommerce.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

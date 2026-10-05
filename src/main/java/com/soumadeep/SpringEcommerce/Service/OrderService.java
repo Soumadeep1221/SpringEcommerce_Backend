@@ -1,12 +1,12 @@
 package com.soumadeep.SpringEcommerce.Service;
 
-import com.soumadeep.SpringEcommerce.Model.DTO.OrderItemRequest;
-import com.soumadeep.SpringEcommerce.Model.DTO.OrderItemResponse;
-import com.soumadeep.SpringEcommerce.Model.DTO.OrderRequest;
-import com.soumadeep.SpringEcommerce.Model.DTO.OrderResponse;
-import com.soumadeep.SpringEcommerce.Model.Order;
-import com.soumadeep.SpringEcommerce.Model.OrderItem;
-import com.soumadeep.SpringEcommerce.Model.Product;
+import com.soumadeep.SpringEcommerce.DTO.OrderItemRequest;
+import com.soumadeep.SpringEcommerce.DTO.OrderItemResponse;
+import com.soumadeep.SpringEcommerce.DTO.OrderRequest;
+import com.soumadeep.SpringEcommerce.DTO.OrderResponse;
+import com.soumadeep.SpringEcommerce.Entity.Order;
+import com.soumadeep.SpringEcommerce.Entity.OrderItem;
+import com.soumadeep.SpringEcommerce.Entity.Product;
 import com.soumadeep.SpringEcommerce.Repo.OrderRepo;
 import com.soumadeep.SpringEcommerce.Repo.ProductRepo;
 import org.springframework.ai.document.Document;

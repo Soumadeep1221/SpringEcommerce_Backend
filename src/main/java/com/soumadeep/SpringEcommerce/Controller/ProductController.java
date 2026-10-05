@@ -1,6 +1,6 @@
 package com.soumadeep.SpringEcommerce.Controller;
 
-import com.soumadeep.SpringEcommerce.Model.Product;
+import com.soumadeep.SpringEcommerce.Entity.Product;
 import com.soumadeep.SpringEcommerce.Service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

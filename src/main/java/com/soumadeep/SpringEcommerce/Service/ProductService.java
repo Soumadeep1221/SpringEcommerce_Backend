@@ -1,6 +1,6 @@
 package com.soumadeep.SpringEcommerce.Service;
 
-import com.soumadeep.SpringEcommerce.Model.Product;
+import com.soumadeep.SpringEcommerce.Entity.Product;
 import com.soumadeep.SpringEcommerce.Repo.ProductRepo;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;

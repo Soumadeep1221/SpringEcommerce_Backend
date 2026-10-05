@@ -1,7 +1,7 @@
 package com.soumadeep.SpringEcommerce.Controller;
 
-import com.soumadeep.SpringEcommerce.Model.DTO.OrderRequest;
-import com.soumadeep.SpringEcommerce.Model.DTO.OrderResponse;
+import com.soumadeep.SpringEcommerce.DTO.OrderRequest;
+import com.soumadeep.SpringEcommerce.DTO.OrderResponse;
 import com.soumadeep.SpringEcommerce.Service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
